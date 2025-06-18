@@ -7,7 +7,9 @@ export const TMDB_CONFIG = {
   }
 }
 export const fetchMovies = async({ query }: {query: string}) => {
-  const endpoint = '/discover/movie?sort_by=popularity.desc'
+  const endpoint = query
+    ? `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
+    : `${TMDB_CONFIG.BASE_URL}/discover/movie?sort_by=popularity.desc`;
 
   const response = await fetch(endpoint, {
     method: 'GET',
@@ -26,17 +28,3 @@ export const fetchMovies = async({ query }: {query: string}) => {
 }
 
 
-// const url = "https://api.themoviedb.org/3/authentication";
-// const options = {
-//   method: "GET",
-//   headers: {
-//     accept: "application/json",
-//     Authorization:
-//       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxNTJkMjEwYWRhZjUxMGRhYThkMzViNmUyNmZkNWIwYyIsIm5iZiI6MTczODA5NDQxNS43MzIsInN1YiI6IjY3OTkzNzRmYjk5ZDdlNzhjNzhmNDI2NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zanNixomJtjx_7aywQ5pqNQypmh9UbwgoIUbzZUHYgs",
-//   },
-// };
-
-// fetch(url, options)
-//   .then((res) => res.json())
-//   .then((json) => console.log(json))
-//   .catch((err) => console.error(err));
