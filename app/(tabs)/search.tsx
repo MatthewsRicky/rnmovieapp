@@ -25,12 +25,16 @@ const Search = () => {
     false
   );
 
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+  };
   useEffect(() => {
-    updateSearchCount(searchQuery, movies[0]);
-    
     const timeoutId = setTimeout(async () => {
       if (searchQuery.trim()) {
         await loadMovies();
+
+        if (movies?.length > 0 && movies?.[0])
+          await updateSearchCount(searchQuery, movies[0]);
       } else {
         reset();
       }
@@ -67,7 +71,7 @@ const Search = () => {
               <SearchBar
                 placeholder="Search movies..."
                 value={searchQuery}
-                onChangeText={(text: string) => setSearchQuery(text)}
+                onChangeText={handleSearch}
               />
             </View>
             {loading && (
