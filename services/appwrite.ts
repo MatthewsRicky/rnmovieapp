@@ -1,48 +1,49 @@
 //track the searches made by the users
 import { Client, Databases, ID, Query } from "react-native-appwrite";
-const DATBASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
+const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTIONS_ID!;
 
 const client = new Client()
   .setEndpoint("https://fra.cloud.appwrite.io/v1")
   .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!);
 
- const database = new Databases(client);
+const database = new Databases(client);
 
 export const updateSearchCount = async (query: string, movie: Movie) => {
-
   try {
-  const result = await database.listDocuments(DATBASE_ID, COLLECTION_ID, [Query.equal('searchTerm', query)
-  ])
+    const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
+      Query.equal("searchTerm", query),
+    ]);
 
-  console.log(result)
+    console.log(result);
 
-  if (result.documents.length > 0) {
-    const exsistingMovie = result.documents[0];
+    if (result.documents.length > 0) {
+      const exsistingMovie = result.documents[0];
 
-    await database.updateDocument(
-      DATBASE_ID,
-      COLLECTION_ID,
-      exsistingMovie.$id,
-      {
-        count: exsistingMovie.count + 1
-      }
-    )
-  } else {
-    await database.createDocument(DATBASE_ID, COLLECTION_ID, ID.unique(), {
-      searchTerm: query,
-      movie_id: movie.id,
-      count: 1,
-      poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-    })
-  }
-    } catch (error) {
-      console.log(error)
-      throw error;
-    };
+      await database.updateDocument(
+        DATABASE_ID,
+        COLLECTION_ID,
+        exsistingMovie.$id,
+        {
+          count: exsistingMovie.count + 1,
+        }
+      );
+    } else {
+      await database.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
+        searchTerm: query,
+        movie_id: movie.id,
+        count: 1,
+        title: movie.title,
+        poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+      });
     }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
-  // check if a record of that search has already been stored
-  // if adocument is found increment the searCount field
-  // if no document is found
-  // create new document in appwrite database
+// check if a record of that search has already been stored
+// if adocument is found increment the searCount field
+// if no document is found
+// create new document in appwrite database
