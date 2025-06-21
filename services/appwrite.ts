@@ -4,9 +4,9 @@ const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTION_ID!;
 const PROJECT_ID = process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!;
 
-console.log(COLLECTION_ID)
-console.log(DATABASE_ID)
-console.log(PROJECT_ID)
+// console.log(COLLECTION_ID)
+// console.log(DATABASE_ID)
+// console.log(PROJECT_ID)
 
 const client = new Client()
   .setEndpoint("https://fra.cloud.appwrite.io/v1")
@@ -20,7 +20,7 @@ export const updateSearchCount = async (query: string, movie: Movie) => {
       Query.equal("searchTerm", query),
     ]);
 
-    console.log(result);
+   // console.log(result);
 
     if (result.documents.length > 0) {
       const exsistingMovie = result.documents[0];
@@ -47,6 +47,21 @@ export const updateSearchCount = async (query: string, movie: Movie) => {
     throw error;
   }
 };
+
+export const getTrendingMovies = async (): Promise<TrendingMovie[] | undefined> => {
+  try {
+    const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
+      Query.limit(5),
+      Query.orderDesc('count'), 
+    ]);
+
+    return result.documents as unknown as TrendingMovie[];
+
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+}
 
 // check if a record of that search has already been stored
 // if adocument is found increment the searCount field
