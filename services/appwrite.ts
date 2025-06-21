@@ -1,11 +1,16 @@
 //track the searches made by the users
 import { Client, Databases, ID, Query } from "react-native-appwrite";
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
-const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTIONS_ID!;
+const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTION_ID!;
+const PROJECT_ID = process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!;
+
+console.log(COLLECTION_ID)
+console.log(DATABASE_ID)
+console.log(PROJECT_ID)
 
 const client = new Client()
   .setEndpoint("https://fra.cloud.appwrite.io/v1")
-  .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID);
+  .setProject(PROJECT_ID);
 
 const database = new Databases(client);
 
