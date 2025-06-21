@@ -5,8 +5,7 @@ import "./globals.css";
 export default function RootLayout() {
   return (
     <>
-    <StatusBar hidden={true} />
-
+      <StatusBar hidden={true} />
 
       <Stack>
         <StatusBar hidden={true} />
